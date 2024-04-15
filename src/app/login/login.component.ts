@@ -8,9 +8,7 @@ import { AuthService } from './../auth.service';
   selector: 'app-login',
   standalone: true,
   imports: [JsonPipe, CommonModule, ReactiveFormsModule],
-  template: `
-
-  <form name="login"
+  template: `<form name="login"
         [formGroup]="formModel"
         (ngSubmit)="onsubmit()"
         class="form">

@@ -7,11 +7,12 @@ import { ChatActionsComponent } from './chat.actions.component';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ChatService, Message } from '../chat.service';
+import { ChatSearchComponent } from './search/chat.search.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [JsonPipe, FormsModule, ChatActionsComponent],
+  imports: [JsonPipe, FormsModule, ChatActionsComponent, ChatSearchComponent],
   animations: [
     trigger("toggleMessage", [
       // state('shown', style({opacity:1, transform:`translateX(0)`})),
@@ -31,27 +32,28 @@ import { ChatService, Message } from '../chat.service';
   <section class="chat">
     <header class="header _row">
       <h2 class="title">Welcome {{username}}</h2>
-      <span class="date">date here</span>
     </header>
-    <div class="content">
-      @for(message of Chat.messages; track message.id){
-        <blockquote class="message _row" [@toggleMessage]>
-          <p class="text">
-            <span class="user">{{message.author.username}} : </span>
-            <span class="body">{{message.body}}</span>
-          </p>
-          <div class="actions">
-            <button type="button"
-              class="action"
-              [name]="'delete['+$index+']'"
-              (click)="delete(message)">X</button>
-          </div>
-        </blockquote>
-      }@empty{
-        <blockquote class="message _row empty">
-          <p class="text">no messages yet...</p>
-        </blockquote>
-      }
+    <div class="content _scroll">
+      <div class="_hack_bottom_scroll">
+        @for(message of Chat.messages; track message.id){
+          <blockquote class="message _row" [@toggleMessage]>
+            <p class="text">
+              <span class="user">{{message.author.username}} : </span>
+              <span class="body">{{message.body}}</span>
+            </p>
+            <div class="actions">
+              <button type="button"
+                class="action"
+                [name]="'delete['+$index+']'"
+                (click)="delete(message)">X</button>
+            </div>
+          </blockquote>
+        }@empty{
+          <blockquote class="message _row empty">
+            <p class="text">no messages yet...</p>
+          </blockquote>
+        }
+      </div>
     </div>
     <div class="actions">
       <app-chat-actions name="userActions"
@@ -72,7 +74,13 @@ import { ChatService, Message } from '../chat.service';
         (onSend)="send($event, true)"
         />
     </div>
+    <!--
     <pre class="_debug">{{Chat.messages |json}}</pre>
+    -->
+
+    <hr>
+
+    <app-chat-search class="search" />
   </section>`,
   styles: `
     .header{
@@ -80,12 +88,21 @@ import { ChatService, Message } from '../chat.service';
     }
     .message{
       position:relative;
+      scroll-snap-align: end;
 
       &.empty{
         opacity: 0.6;
         font-style: italic;
         color: gray;
       }
+    }
+    ._scroll{
+      overflow-y: scroll;
+      max-height: 60vh;
+      // force scroll bottom
+      // !!! wrap message so not in reverse ;)
+      display: flex;
+      flex-direction: column-reverse;
     }
   `
 })

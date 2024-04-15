@@ -15,7 +15,6 @@ import { ChatComponent } from '../chat/chat.component';
     <app-chat />
   </div>
   `,
-  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
 

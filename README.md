@@ -26,3 +26,9 @@ This is a basic test app to play with Angular
 - animation api
   * test the *weird?* animation api
   * ensure keeping index in list during anim ;)
+
+- search
+  * mini playground around rx-js
+    - like signal to observable
+    - mixed with from(input)Event
+    - => magic :)

@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { User } from './auth.service';
+import defaultChat from './chat.service.moc';
 
 export type Message = {
   id:number,
@@ -9,11 +10,7 @@ export type Message = {
 }
 
 // default - may be overided by storage
-const history:Message[] = [{
-  id:-100,
-  author: {id:0, username: 'test'},
-  body: 'history test'
-}]
+const history:Message[] = defaultChat
 
 
 @Injectable({
@@ -22,7 +19,7 @@ const history:Message[] = [{
 export class ChatService {
   // magic : hide signal and expose it through getter/setter as noram vars (but reactive ^^
   // ... did not really test edge cases...
-  private messagesSignal = signal<Message[]>([]);
+  messagesSignal = signal<Message[]>([]);
   get messages() {
     return this.messagesSignal();
   }
