@@ -1,27 +1,28 @@
 # Test
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
+This is a basic test app to play with Angular
 
-## Development server
+| note that it is really basic - it is just to play with some features.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- route guard
+  * home (/) is protected --> redirect to `/login` if not connected
+  * may retrieve session (ocalStorage)
+  * logout will remove session
+  * login over login will just override
 
-## Code scaffolding
+- form validation
+  * login page use `ReactiveFormsModule` with a debug to play with validation
+  * chatt app use `FormsModule` as it is just to bind data
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- data service (message stack)
+  * add / remove messages
+  * play with `signals` for reactivity
+  * (don't know if prefere rx... signals seems fine)
 
-## Build
+- app-composition
+  * eg chat form actions to (add message) is a sub-component
+  * duplicated to simulate an other user
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- animation api
+  * test the *weird?* animation api
+  * ensure keeping index in list during anim ;)
