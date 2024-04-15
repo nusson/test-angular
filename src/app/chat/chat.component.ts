@@ -1,7 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ChatActionsComponent } from './chat.actions.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -10,7 +11,7 @@ import { ChatService, Message } from '../chat.service';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [JsonPipe, FormsModule],
+  imports: [JsonPipe, FormsModule, ChatActionsComponent],
   animations: [
     trigger("toggleMessage", [
       // state('shown', style({opacity:1, transform:`translateX(0)`})),
@@ -53,31 +54,23 @@ import { ChatService, Message } from '../chat.service';
       }
     </div>
     <div class="actions">
-      <form action="#" class="form" (ngSubmit)="send(newMessage)">
-        <div class="row">
-          <label for="message" class="label">{{username}} : </label>
-          <input type="text" id="message" name="message" [(ngModel)]="newMessage" />
-          <input type="submit" class="submit" value="Send"/>
-        </div>
-        @if(error['user']){
-          <p class="error">{{error['user']}}</p>
-        }
-      </form>
+      <app-chat-actions name="userActions"
+        [message]="newMessage"
+        [username]="username"
+        [errorMsg]="error['user']"
+        (onSend)="send($event)"
+        />
     </div>
 
     <!-- repeat to simulate an other user -->
     <div class="actions">
       <h4>FAKE USER</h4>
-      <form action="#" class="form" (ngSubmit)="send(fakeNewMessage, true)">
-        <div class="row">
-          <label for="message" class="label">Fake : </label>
-          <input type="text" id="message" name="message" [(ngModel)]="fakeNewMessage" />
-          <input type="submit" class="submit" value="Send"/>
-        </div>
-        @if(error['fake']){
-          <p class="error">{{error['fake']}}</p>
-        }
-      </form>
+      <app-chat-actions name="fakeActions"
+        [message]="fakeMessage"
+        username="fake"
+        [errorMsg]="error['fake']"
+        (onSend)="send($event, true)"
+        />
     </div>
     <pre class="_debug">{{Chat.messages |json}}</pre>
   </section>`,
@@ -99,12 +92,12 @@ import { ChatService, Message } from '../chat.service';
 export class ChatComponent {
 
   Auth=inject(AuthService)//.logout
-  username = this.Auth.username
+  username = this.Auth.username!
 
   Chat=inject(ChatService)
 
-  protected newMessage:string=''
-  protected fakeNewMessage:string=''
+  protected newMessage=signal('')
+  protected fakeMessage=signal('')
   protected error:{fake?:string, user?:string}={
     fake:undefined,
     user:undefined
@@ -117,7 +110,7 @@ export class ChatComponent {
     const author = fake
       ? {id:42, username:'Fake'}
       : this.Auth.user!
-    this[`${fake ? 'fakeN' : 'n'}ewMessage`] = ''
+    this[`${fake ? 'fake' : 'new'}Message`].set('')
     this.Chat.send({author, body})
     .catch(error=>{
       this.error[errorKey] = error
