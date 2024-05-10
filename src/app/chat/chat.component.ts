@@ -1,9 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+// import { CommonModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChatActionsComponent } from './chat.actions.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ChatService, Message } from '../chat.service';
@@ -12,7 +16,7 @@ import { ChatSearchComponent } from './search/chat.search.component';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [JsonPipe, FormsModule, ChatActionsComponent, ChatSearchComponent],
+  imports: [CommonModule, BrowserAnimationsModule, JsonPipe, FormsModule, ChatActionsComponent, ChatSearchComponent, ],
   animations: [
     trigger("toggleMessage", [
       // state('shown', style({opacity:1, transform:`translateX(0)`})),

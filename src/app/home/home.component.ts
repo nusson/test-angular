@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -6,7 +7,7 @@ import { ChatComponent } from '../chat/chat.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ChatComponent],
+  imports: [ChatComponent, CommonModule],
   template: `
   <nav class="nav">
     <button (click)="logout()" class="btn logout">Logout</button>
